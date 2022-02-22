@@ -1,4 +1,4 @@
-#file or combining together all the functionality
+# file for combining all the functionality
 from fantasyanalyzer.pulldata import queries
 
 
@@ -16,16 +16,20 @@ class commandLine:
             self.runState = False
         elif command == "query":
             self.processQuery()
+        else:
+            print("Invalid Command")
         result = self.runState
         return result
 
     def processQuery(self):
-        queryCommands = ["pos", "team"]
+        queryCommands = ["pos", "name"]
         inQuery = True
         newQuery = queries.query()
-        print("Commands = pos, team")
+        print("Commands = pos, name, team")
         whichquery = input("Please enter what you would like to query?")
         while inQuery:
+
+            # Might need some error handling error and encapsulate it in a try catch statement
             if whichquery == "pos":
                 print("Positions: RB, TE, QB, WR")
                 whichpos = input("Please enter the position you would like to query: ")
@@ -33,8 +37,19 @@ class commandLine:
                 newQuery.queryPos(pos)
                 newQuery.printByFantPt()
                 inQuery = False
+            elif whichquery == "name":
+                name = input("Please enter the name of the player you would like to query: ")
+                newQuery.queryName(name)
+                newQuery.printData()
+                inQuery = False
+            elif whichquery == "team":
+                teamname = input("Enter Team Abbreviation (IND, LAR, HOU, etc.): ")
+                newQuery.queryTeam(teamname.upper())
+                newQuery.printData()
+                inQuery = False
+
             else:
-                print("Nothing else ready yet")
+                print("Invalid command")
 
 
 

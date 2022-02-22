@@ -1,4 +1,4 @@
-from tkinter import E
+# This pulls the fantasy data from the profootballreference website
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
@@ -70,3 +70,5 @@ df = pd.concat(df)
 df.head()
 df.to_csv("..\..\\sheets\\fantasy2021.csv")
 #this is the relative path so it will work on multiple computers
+
+#credit to stmorse.github.io
