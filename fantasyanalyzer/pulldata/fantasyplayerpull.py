@@ -29,11 +29,11 @@ for i, row in enumerate(parsed_table.find_all('tr')[2:]):
         break
 
     try:
-        dat = row.find('td', attrs={'data-stat': 'player'})
+        dat = row.find('td', attrs={'sheets-stat': 'player'})
         name = dat.a.get_text()
         stub = dat.a.get('href')
         stub = stub[:-4] + '/fantasy/' + str(year)
-        pos = row.find('td', attrs={'data-stat': 'fantasy_pos'}).get_text()
+        pos = row.find('td', attrs={'sheets-stat': 'fantasy_pos'}).get_text()
 
         # grab this players stats
         tdf = pd.read_html(url + stub)[0]
@@ -68,5 +68,5 @@ for i, row in enumerate(parsed_table.find_all('tr')[2:]):
 
 df = pd.concat(df)
 df.head()
-df.to_csv("..\..\\data\\fantasy2021.csv")
+df.to_csv("..\..\\sheets\\fantasy2021.csv")
 #this is the relative path so it will work on multiple computers

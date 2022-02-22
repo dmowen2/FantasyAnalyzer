@@ -2,12 +2,11 @@ import pandas as pd
 
 
 
-
 class query:
     def __init__(self):
-        self.generaldata = pd.read_csv("..\\..\\fantasy2021.csv")
+        self.generaldata = pd.read_csv("C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv")
         
-        # general data cleanup by replacing spaces
+        # general sheets cleanup by replacing spaces
         self.generaldata.columns = [column.replace(" ", "_") for column in self.generaldata.columns]
         
 
