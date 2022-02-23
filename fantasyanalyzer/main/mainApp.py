@@ -14,6 +14,8 @@ class commandLine:
         if command == "exit":
             print("Exiting the program")
             self.runState = False
+        elif command == "help":
+            print("Available Commands: help, exit, query")
         elif command == "query":
             self.processQuery()
         else:
@@ -50,6 +52,10 @@ class commandLine:
 
             else:
                 print("Invalid command")
+        saveassheet = input("Would you like to save the queried data in a separate sheet? (Y/N): ")
+        if saveassheet.lower() == 'y':
+            nameofsheet = input("What would you like to name the sheet?: ")
+            newQuery.saveData(nameofsheet)
 
 
 

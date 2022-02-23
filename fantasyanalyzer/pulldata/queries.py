@@ -22,9 +22,14 @@ class query:
     def queryTeam(self, teamabv):
         self.data = self.generaldata.query('Tm == "%s"' % teamabv)
 
+    def saveData(self, name):
+        path = "C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\" + name + ".csv"
+        self.data.to_csv(path)
+        print("Saved")
 
 
-
+    def getQuery(self):
+        return self.data
         
     def printByFantPt(self):
         # This is sorted
