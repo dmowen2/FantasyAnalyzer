@@ -1,7 +1,7 @@
 
 
 class ptAnalysis:
-    def __init__(self, df, name):
+    def __init__(self, df, name=''):
         self.df = df
         self.name = name
 
