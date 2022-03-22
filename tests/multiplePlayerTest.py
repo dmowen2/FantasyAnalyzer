@@ -26,3 +26,20 @@ newQuery.rankby()
 newQuery.printByFantPt()
 
 # newQuery.saveData("tedata")
+
+"""
+Example input
+    Insert the name of the column to be added: meanr
+    Insert the name of the column you want ranked by: mean
+    Ascending (True/False): f
+    Insert the name of the column to be added: sumr
+    Insert the name of the column you want ranked by: sum
+    Ascending (True/False): f
+    Insert Column 1 you want to average: meanr
+    Insert Column 2 you want to average: sumr
+    Creating column: avgmeanrsumr
+    Insert the name of the column to be added: rank
+    Insert the name of the column you want ranked by: avgmeanrsumr
+    Ascending (True/False): True
+    What would you like to sort by? ('mean', 'std', 'min', 'max')avgmeanrsumr
+"""
