@@ -3,6 +3,7 @@ A python program for analyzing fantasy football data and projecting the best fan
 
 To Do/Road map
 - Need to add graphical plotting methods/visualization of data using the matplot lib library
+    - Started with basic scatter plot info being added (more graphing functionality and options need to be added)
 - Need to add age data along with potential ways to analyze age
     - Add a way to find out the amount of years in the league for each individual player then add that to the general data table
     - Use the pro football rankings weights/previous calculations in order to assign a weighted age grade to the player to better generate the total weight score for the player
