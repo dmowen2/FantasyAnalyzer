@@ -69,6 +69,6 @@ for i, row in enumerate(parsed_table.find_all('tr')[2:]):
 df = pd.concat(df)
 df.head()
 df.to_csv("..\..\\sheets\\fantasy2021.csv")
-#this is the relative path so it will work on multiple computers
+# this is the relative path so it will work on multiple computers
 
-#credit to stmorse.github.io
+# credit to stmorse.github.io
