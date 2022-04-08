@@ -20,8 +20,12 @@ newQuery = queries.query("C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheet
 
 newQuery.queryPos("RB", True)
 
-print(newQuery.getQuery())
-hold = newQuery.getQuery().plot.scatter('AvgFantPt', 'YINL', 5, 'Red')
+hold = newQuery.getQuery().groupby('YINL').agg({'AvgFantPt': ['mean', 'min', 'max', 'std', 'sum']})
+groups = list(newQuery.getQuery().groupby('YINL').groups.keys())
+hold['YINL'] = groups
+hold.to_csv('testdata.csv')
 
+holdplot = hold.plot('YINL', ('AvgFantPt','mean'), style='o-', color='Red')
+plt.title("RB Avg Fantasy Pts per YINL")
 plt.show()
 
