@@ -4,22 +4,24 @@ import pandas as pd
 
 # This file is for processing the different queries that be called through the command line functionality
 class query:
-    def __init__(self):
-        self.generaldata = pd.read_csv("C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv")
+    def __init__(self, csvtoread="C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv"):
+        basequery = "C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv"
+        self.generaldata = pd.read_csv(csvtoread)
         # general sheets cleanup by replacing spaces
         self.generaldata.columns = [column.replace(" ", "_") for column in self.generaldata.columns]
         
 
-    def queryPos(self, position):
+    def queryPos(self, position, seasonal=False):
         # position is a string value defining what position the individual fantasy player wants
-        newdata = self.generaldata.query('Position == "%s"' % position)
+        self.data = self.generaldata.query('Position == "%s"' % position)
         # fixing the display of the players
         # working line
-        self.data = newdata.groupby('Name').agg({'FantPt': ['mean', 'min', 'max', 'std', 'sum']})
+        if seasonal == False:
+            self.data = self.data.groupby('Name').agg({'FantPt': ['mean', 'min', 'max', 'std', 'sum']})
+            self.data['Name'] = self.generaldata['Name']
         # Test line
-        # self.data = newdata.groupby('Name').agg(['mean', 'min', 'max', 'std', 'sum'])
 
-        self.data['Name'] = self.generaldata['Name']
+        # self.data = newdata.groupby('Name').agg(['mean', 'min', 'max', 'std', 'sum'])
 
 
 

@@ -55,13 +55,11 @@ class commandLine:
                 inQuery = False
                 self.processQuery()
 
-
 # This needs to be moved so it is not repeated
         saveassheet = input("Would you like to save the queried data in a separate sheet? (Y/N): ")
         if saveassheet.lower() == 'y':
             nameofsheet = input("What would you like to name the sheet?: ")
             newQuery.saveData(nameofsheet)
-
 
 
     def run(self):

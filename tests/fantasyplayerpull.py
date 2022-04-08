@@ -18,11 +18,14 @@ parsed_table = soup.find_all('table')[0]
 
 df = []
 
+
+print(url + '/years/' + str(year) + '/fantasy.htm')
 # this pulls basically all the players
 
 
 # first 2 rows are col headers
 for i, row in enumerate(parsed_table.find_all('tr')[2:]):
+    print(row)
     if i % 10 == 0: print(i, end=' ') 
     if i >= maxp:
         print('\nComplete.')

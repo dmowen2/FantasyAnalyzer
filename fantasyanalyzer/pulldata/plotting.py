@@ -6,7 +6,8 @@ class plotting:
     def __init__(self, data):
         self.data = data
 
-    # random color function stolen from stack overflow
+    # random color function stolen fromplotting = plotting.plotting(newQuery.getQuery())
+    # plotting.scatterplot() stack overflow
     def get_cmap(self, n, name='hsv'):
         return plt.cm.get_cmap(name, n)
 
