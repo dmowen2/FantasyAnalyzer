@@ -8,7 +8,7 @@ maxp = 300
 # grab fantasy players
 
 
-year = 2012
+year = 2021
 df = []
 
 # first 2 rows are col headers

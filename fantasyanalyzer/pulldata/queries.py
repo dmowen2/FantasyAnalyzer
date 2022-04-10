@@ -7,6 +7,7 @@ class query:
     def __init__(self, csvtoread="C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv"):
         basequery = "C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\fantasy2021.csv"
         self.generaldata = pd.read_csv(csvtoread)
+        self.data = self.generaldata
         # general sheets cleanup by replacing spaces
         self.generaldata.columns = [column.replace(" ", "_") for column in self.generaldata.columns]
         

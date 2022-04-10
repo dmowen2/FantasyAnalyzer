@@ -11,7 +11,10 @@ years = [2012, 2013, 2014, 2015, 2016, 2017,2018, 2019, 2020, 2021]
 
 avgline = pandas.DataFrame(columns=years)
 
-yinl = {0: [0, 0], 1: [0, 0], 2: [0, 0], 3: [0, 0], 4: [0, 0], 5: [0, 0], 6: [0, 0], 7: [0, 0], 8: [0, 0], 9: [0, 0], 10: [0, 0], 11: [0, 0], 12: [0, 0], 13: [0, 0], 14: [0, 0], 15: [0, 0], 16: [0, 0]}
+yinl = {0: [0, 0], 1: [0, 0], 2: [0, 0], 3: [0, 0], 4: [0, 0], 5: [0, 0], 6: [0, 0], 7: [0, 0],
+        8: [0, 0], 9: [0, 0], 10: [0, 0], 11: [0, 0], 12: [0, 0], 13: [0, 0], 14: [0, 0], 15: [0, 0],
+        16: [0, 0], 17: [0,0], 18: [0,0], 19: [0,0], 20: [0,0], 21: [0,0]}
+
 
 
 for year in years:
@@ -23,7 +26,6 @@ for year in years:
     groups = list(newQuery.getQuery().groupby('YINL').groups.keys())
 
     hold['YINL'] = groups
-
     for yinlnum in groups:
             yinl[yinlnum][0] += hold[('AvgFantPt', 'mean')][yinlnum]
             yinl[yinlnum][1] += 1
@@ -33,11 +35,15 @@ for year in years:
     plt.plot(hold['YINL'], hold[('AvgFantPt','mean')], label=str(year))
 
 avgvalue = []
+keystouse = []
 for k in yinl:
+    if yinl[k][1] == 0:
+        break;
     avgvalue += [yinl[k][0]/yinl[k][1]]
+    keystouse += [k]
 
 # plots the average of each individual subplot
-plt.plot(yinl.keys(), avgvalue, label="Avg Mean",color='Blue')
+plt.plot(keystouse, avgvalue, label="Avg Mean",color='Blue')
 
 plt.ylabel("Mean Fantasy Points")
 plt.xlabel("Years in league")
