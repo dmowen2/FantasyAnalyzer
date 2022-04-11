@@ -8,10 +8,10 @@ import numpy as np
 
 abrvQuery = queries.query("C:\\Users\\bluem\\vscodeprojects\FantasyAnalyzer\sheets\\teaminfo.csv")
 years = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021]
-rankanddifferences = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [],
+rankanddifferences = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [],
                       8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: [], 15: [], 16: [],
                       17: [], 18: [], 19: [], 20: [], 21: [], 22: [], 23: [], 24: [], 25: [],
-                      26: [], 27: [], 28: [], 29: [], 30: [], 31: []}
+                      26: [], 27: [], 28: [], 29: [], 30: [], 31: [], 32:[]}
 
 for year in years:
 
@@ -35,9 +35,14 @@ for year in years:
         playermean = findnamerow[('FantPt', 'mean')][name]
         opp = row['Opp']
 
-
     # get team name index from the abbreviation
 
+        if opp == 'OAK':
+            opp = 'LVR'
+        elif opp == 'STL':
+            opp = 'LAR'
+        elif opp == 'SDG':
+            opp = 'LAC'
         getnameindex = abrvQuery.getQuery().index[abrvQuery.getQuery()['Abbreviation'] == opp].tolist()
     # find team name from team info
         teamname = abrvQuery.getQuery().at[getnameindex[0], 'Name']
@@ -47,11 +52,16 @@ for year in years:
 
     # This gets the defensive rank according to the matchup Rank.2 is rushing (its screwed up i know but tbh changing
     # it is not worth the time)
+
+
+        if defrankindex == []:
+            defrankindex = defenserankingQuery.getQuery().index[defenserankingQuery.getQuery()['Tm'] == "Washington Redskins"].tolist()
         defrank = defenserankingQuery.getQuery().at[defrankindex[0], 'Rank.2']
 
+        # Rank.1 = receiving yard points allowed ranking Rank.2
         difference = (playermean-row['FantPt'])*-1
         if (str(difference) != 'nan'):
-            rankanddifferences[int(float(defrank))-1] += [(playermean-row['FantPt'])*-1]
+            rankanddifferences[int(float(defrank))] += [(playermean-row['FantPt'])*-1]
 
 
 
@@ -69,7 +79,11 @@ for year in years:
 # have to zip each key with all the values in the associated list for easier plotting
 avgs = []
 for k in rankanddifferences.keys():
-    avgs += [sum(rankanddifferences[k])/len(rankanddifferences[k])]
+    div = len(rankanddifferences[k])
+    if (div == 0):
+        div = 1
+
+    avgs += [sum(rankanddifferences[k])/div]
 
 for (k, v) in breakdown:
     stattuplelist += map(lambda e: (k, e), v)
@@ -77,9 +91,9 @@ for (k, v) in breakdown:
 fig, ax = plt.subplots()
 x_values = [x[0] for x in stattuplelist]
 y_values = [y[1] for y in stattuplelist]
-ax.plot(x_values, y_values, label=str(year))
+# ax.scatter(x_values, y_values, label="")
 ax.plot(rankanddifferences.keys(), avgs, color='Red', label='Averages')
-
-
+print(avgs)
+plt.title("RB Avg Difference in score vs Defensive Fantasy points allowed ranking")
 plt.legend()
 plt.show()
