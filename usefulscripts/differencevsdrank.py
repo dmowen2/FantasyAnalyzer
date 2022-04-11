@@ -1,7 +1,11 @@
+import numpy
 import pandas
 
 from fantasyanalyzer.pulldata import queries, plotting
 import matplotlib.pyplot as plt
+from sklearn.linear_model  import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import IsolationForest
 import pandas as pd
 import numpy as np
 
@@ -12,6 +16,12 @@ rankanddifferences = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [],
                       8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: [], 15: [], 16: [],
                       17: [], 18: [], 19: [], 20: [], 21: [], 22: [], 23: [], 24: [], 25: [],
                       26: [], 27: [], 28: [], 29: [], 30: [], 31: [], 32:[]}
+separateyear = 2021
+singleyear = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [],
+                      8: [], 9: [], 10: [], 11: [], 12: [], 13: [], 14: [], 15: [], 16: [],
+                      17: [], 18: [], 19: [], 20: [], 21: [], 22: [], 23: [], 24: [], 25: [],
+                      26: [], 27: [], 28: [], 29: [], 30: [], 31: [], 32:[]}
+
 
 for year in years:
 
@@ -64,36 +74,101 @@ for year in years:
             rankanddifferences[int(float(defrank))] += [(playermean-row['FantPt'])*-1]
 
 
+        if (year == separateyear):
+            if (str(difference) != 'nan'):
+                singleyear[int(float(defrank))] += [(playermean-row['FantPt'])*-1]
 
     # simply print the differences
     #  print(str(opp) + ": " + str((playermean-row['FantPt'])*-1))
 
     # find the ranking for the defense for rushing sinces its running back
 
-# print(rankanddifferences[16])
-# print(ppgdf)
 
-    breakdown = list(rankanddifferences.items())
-    stattuplelist = []
+# breaks down the dictionary into a list of tuples for easier handling
+breakdown = list(rankanddifferences.items())
+stattuplelist = []
 
 # have to zip each key with all the values in the associated list for easier plotting
 avgs = []
+
+# Find the average for each individual rank
 for k in rankanddifferences.keys():
     div = len(rankanddifferences[k])
     if (div == 0):
         div = 1
-
     avgs += [sum(rankanddifferences[k])/div]
 
+# zip each key with all the values in the associated list for easier plotting
 for (k, v) in breakdown:
     stattuplelist += map(lambda e: (k, e), v)
 
+
+# Begin plotting
 fig, ax = plt.subplots()
+
+
+
+# further breaks down the values for plotting by getting each individual x value and corresponding y value
 x_values = [x[0] for x in stattuplelist]
 y_values = [y[1] for y in stattuplelist]
-# ax.scatter(x_values, y_values, label="")
-ax.plot(rankanddifferences.keys(), avgs, color='Red', label='Averages')
-print(avgs)
+
+# single year breakdown
+oneyearbreakdown = list(singleyear.items())
+oneyearstattuplelist = []
+for (k, v) in oneyearbreakdown:
+    oneyearstattuplelist += map(lambda e: (k, e), v)
+
+yearx_values = [x[0] for x in oneyearstattuplelist]
+yeary_values = [y[1] for y in oneyearstattuplelist]
+
+# necessary numpy array conversions for the linear model
+xarr = numpy.array(x_values)
+yarr = numpy.array(y_values)
+
+
+x_train, x_test, y_train, y_test = train_test_split(xarr, yarr, test_size=.2)
+
+# plt.scatter(x_train, y_train, label="Training data", color='b', alpha=.7)
+
+# linear regression
+LR = LinearRegression()
+LR.fit(x_train.reshape(-1, 1), y_train.reshape(-1, 1))
+prediction = LR.predict(x_test.reshape(-1, 1))
+
+# just change 32 to whatever rank to show a prediction
+# print("Prediction for rank 32")
+# print(LR.predict(np.array([[32]]))[0])
+
+print("Score for the model: ")
+
+# one year arrays to compare linear regression to a single year
+yxarr = numpy.array(yearx_values)
+yyarr = numpy.array(yeary_values)
+
+# score compared to single year
+# score = LR.score(yxarr.reshape(-1, 1), yyarr)
+
+# mean arrays to compare linear regression to means
+xmarr = numpy.array(list(rankanddifferences.keys()))
+ymarr = numpy.array(avgs)
+
+#score compared to means
+# score = LR.score(xmarr.reshape(-1, 1), ymarr)
+
+# score against all year datapoints
+score = LR.score(x_test.reshape(-1, 1), y_test)
+print(score)
+
+ax.plot(x_test, prediction, label='Predicted Differences', color='r')
+
+# plot test data in scatter plot
+# plt.scatter(x_test, y_test, label="Test Data", color='g', alpha=.7)
+
+ax.scatter(xarr, yarr, label="Testing Data")
+
+# ax.scatter(rankanddifferences.keys(), avgs, color='Red', label='Averages')
+
+
 plt.title("RB Avg Difference in score vs Defensive Fantasy points allowed ranking")
 plt.legend()
 plt.show()

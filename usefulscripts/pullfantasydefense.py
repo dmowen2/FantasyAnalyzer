@@ -1,7 +1,7 @@
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 
-year = 2012
+year = 2021
 
 dstatsurl = 'https://www.pro-football-reference.com/years/'+ str(year) + '/opp.htm'
 

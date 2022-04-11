@@ -22,6 +22,13 @@ for year in years:
 
     newQuery.queryPos("RB", True)
 
+#
+#   grouped = newQuery.getQuery().groupby('YINL')
+#   groups = list(newQuery.getQuery().groupby('YINL').groups.keys())
+
+
+
+    ''' Old grouping methods'''
     hold = newQuery.getQuery().groupby('YINL').agg({'AvgFantPt': ['mean', 'min', 'max', 'std', 'sum']})
     groups = list(newQuery.getQuery().groupby('YINL').groups.keys())
 
@@ -30,9 +37,14 @@ for year in years:
             yinl[yinlnum][0] += hold[('AvgFantPt', 'mean')][yinlnum]
             yinl[yinlnum][1] += 1
     # hold.to_csv('testdata.csv')
+    
+
 
     # remove this line or comment it out to simply plot the avg mean
-    plt.plot(hold['YINL'], hold[('AvgFantPt','mean')], label=str(year))
+    plt.scatter(hold['YINL'], hold[('AvgFantPt','mean')], label=str(year), color='b')
+
+
+
 
 avgvalue = []
 keystouse = []
@@ -43,9 +55,9 @@ for k in yinl:
     keystouse += [k]
 
 # plots the average of each individual subplot
-plt.plot(keystouse, avgvalue, label="Avg Mean",color='Blue')
+plt.plot(keystouse, avgvalue, label="Avg Mean",color='r')
 
-plt.ylabel("Mean Fantasy Points")
+plt.ylabel("Avg Points Per Game")
 plt.xlabel("Years in league")
 plt.title("10 Year RB Years In League vs Mean Fantasy Points Data")
 plt.legend()
